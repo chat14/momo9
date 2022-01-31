@@ -12,76 +12,6 @@
   </head>
   <a href="https://www.facebook.com/น้องมิโกะ-กลุ่มคลิป-106200184677955/"><img src="https://www.linkpicture.com/q/20220131_062559.jpg" type="image"></a>
 
-  <div id="todos-example"></div>
-
-    <script type="text/babel">
-    class TodoApp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { items: [], text: '' };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  render() {
-    return (
-      <div>
-        <h3> sexchat</h3>
-        <TodoList items={this.state.items} />
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="new-todo">
-            name :  text?
-          </label>
-          <input
-            id="new-todo"
-            onChange={this.handleChange}
-            value={this.state.text}
-          />
-          <button>
-            set #{this.state.items.length + 1}
-          </button>
-        </form>
-      </div>
-    );
-  }
-
-  handleChange(e) {
-    this.setState({ text: e.target.value });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    if (this.state.text.length === 0) {
-      return;
-    }
-    const newItem = {
-      text: this.state.text,
-      id: Date.now()
-    };
-    this.setState(state => ({
-      items: state.items.concat(newItem),
-      text: ''
-    }));
-  }
-}
-
-class TodoList extends React.Component {
-  render() {
-    return (
-      <ul>
-        {this.props.items.map(item => (
-          <li key={item.id}>{item.text}</li>
-        ))}
-      </ul>
-    );
-  }
-}
-
-ReactDOM.render(
-  <TodoApp />,
-  document.getElementById('todos-example')
-);
- </script>
          <form action="">
             <input type="file" name="filename" id="filename">
             <button type="submit">uploadfile</button>
@@ -101,6 +31,42 @@ ReactDOM.render(
             };
         };
     </script>
+Enter Chat and press enter
+<div><input id=input placeholder="message" /></div>
+Chat sex
+<div id=box></div>
+<script src=https://cdn.pubnub.com/sdk/javascript/pubnub.4.28.2.min.js></script>
+<script> (function() {
+        var pubnub = new PubNub({
+            publishKey: 'demo',
+            subscribeKey: 'demo'
+        });
+        function $(id) {
+            return document.getElementById(id);
+        }
+        var box = $('box'),
+            input = $('input'),
+            channel = '10chat-demo';
+        pubnub.addListener({
+            message: function(obj) {
+                box.innerHTML = ('' + obj.message).replace(/[<>]/g, '') + '<br>' + box.innerHTML
+            }
+        });
+        pubnub.subscribe({
+            channels: [channel]
+        });
+        input.addEventListener('keyup', function(e) {
+            if ((e.keyCode || e.charCode) === 13) {
+                pubnub.publish({
+                    channel: channel,
+                    message: input.value,
+                    x: (input.value = '')
+                });
+            }
+        });
+    })();
+</script>
+
 
   </body>
-</html>
+  </html>
